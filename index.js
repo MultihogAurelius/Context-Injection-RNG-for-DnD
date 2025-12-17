@@ -23,7 +23,7 @@
       `turn_id=${turnId}\n` +
       "scope=this_response\n" +
       `queue=${queue.join(",")}\n` +
-      "rule=ABSOLUTE LAW: use in order. For rolls < d20 (e.g. damage), use value modulo die size (or clamp).\n" +
+      "rule=ABSOLUTE LAW: use in order. For rolls < d20 (e.g. damage), use value modulo die size.\n" +
       "[/RNG_QUEUE]\n\n"
     );
   }
@@ -62,4 +62,5 @@
 
     chat[idx] = cloned;
   };
+
 })();
