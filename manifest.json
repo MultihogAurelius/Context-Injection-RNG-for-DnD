@@ -1,0 +1,9 @@
+{
+  "display_name": "Context Injection RNG",
+  "version": "0.0.1",
+  "author": "you",
+  "js": "index.js",
+  "loading_order": 10,
+  "generate_interceptor": "rngQueueInterceptor", 
+  "auto_update": false
+}
