@@ -18,16 +18,16 @@
     function buildRngBlock(queue) {
         const turnId = Date.now();
         return (
-            "[RNG_QUEUE v3.0]\n" +
+            "[RNG_QUEUE v5.0]\n" +
             `turn_id=${turnId}\n` +
             "scope=this_response\n" +
             `queue=[${queue.join(", ")}]\n` +
             "rule=ABSOLUTE LAW: Use seeds in strict order. NEVER skip a seed.\n" +
-            "LOGGING FORMAT (Strict VTT Style):\n" +
-            "  - Attack/Check: (Action: [Seed X] Raw + Mod = Total vs DC Y)\n" +
-            "  - Damage/Other: (Type: [Seed X] d{DieSize} -> Result)\n" +
-            "    *CALCULATION RULE: Result = ((Seed - 1) % Die) + 1. Perform this math silently, output only the result.*\n" +
-            "    Ex: (Damage: [Seed 12] d6 -> 6 slashing)\n" +
+            "LOGGING FORMAT (Hybrid):\n" +
+            "  - Attack/Check (d20): (Action: Roll + Mod = Total vs DC Y)\n" +
+            "    *Do NOT show the seed bracket. Just use the value.* (e.g. 17 + 2 = 19)\n" +
+            "  - Damage/Other (dX): (Type: [Seed X] d{Size} -> Result)\n" +
+            "    *Calculate: ((Seed - 1) % Die) + 1. SHOW THE SEED.* (e.g. [Seed 14] d6 -> 2)\n" +
             "[/RNG_QUEUE]\n\n"
         );
     }
@@ -53,7 +53,7 @@
         const msg = chat[idx];
         const contentToCheck = (typeof msg.content === 'string') ? msg.content : msg.mes;
 
-        if (contentToCheck && contentToCheck.includes("[RNG_QUEUE v3.0]")) {
+        if (contentToCheck && contentToCheck.includes("[RNG_QUEUE v5.0]")) {
             return;
         }
 
