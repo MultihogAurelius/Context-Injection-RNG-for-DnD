@@ -3,18 +3,22 @@
 
     const QUEUE_LEN = 20;
 
+    // Standard d20 generator (1-20)
     function rollD20() {
         const buf = new Uint32Array(1);
         crypto.getRandomValues(buf);
         return (buf[0] % 20) + 1;
     }
 
+    // Creates the queue of seeds
     function makeQueue(n = QUEUE_LEN) {
         const out = [];
         for (let i = 0; i < n; i++) out.push(rollD20());
         return out;
     }
 
+    // Builds the minimal data block.
+    // NOTE: All rules and formatting instructions have been moved to the System Prompt.
     function buildRngBlock(queue) {
         const turnId = Date.now();
         return (
@@ -22,12 +26,6 @@
             `turn_id=${turnId}\n` +
             "scope=this_response\n" +
             `queue=[${queue.join(", ")}]\n` +
-            "rule=ABSOLUTE LAW: Use seeds in strict order. NEVER skip a seed.\n" +
-            "LOGGING FORMAT (Hybrid):\n" +
-            "  - Attack/Check (d20): (Action: Roll + Mod = Total vs DC Y)\n" +
-            "    *Do NOT show the seed bracket. Just use the value.* (e.g. 17 + 2 = 19)\n" +
-            "  - Damage/Other (dX): (Type: [Seed X] d{Size} -> Result)\n" +
-            "    *Calculate: ((Seed - 1) % Die) + 1. SHOW THE SEED.* (e.g. [Seed 14] d6 -> 2)\n" +
             "[/RNG_QUEUE]\n\n"
         );
     }
@@ -41,6 +39,7 @@
 
     globalThis.rngQueueInterceptor = async function (chat, contextSize, abort, type) {
         let idx = -1;
+        // Find the last user message to inject the data into
         for (let i = chat.length - 1; i >= 0; i--) {
             if (isUserMessage(chat[i])) {
                 idx = i;
@@ -53,6 +52,7 @@
         const msg = chat[idx];
         const contentToCheck = (typeof msg.content === 'string') ? msg.content : msg.mes;
 
+        // Version check to prevent double-injection
         if (contentToCheck && contentToCheck.includes("[RNG_QUEUE v5.0]")) {
             return;
         }
@@ -61,6 +61,7 @@
         const block = buildRngBlock(queue);
         const cloned = structuredClone(msg);
 
+        // Prepend the block to the user's message
         if (typeof cloned.content === "string") cloned.content = block + cloned.content;
         if (typeof cloned.mes === "string") cloned.mes = block + cloned.mes;
 
