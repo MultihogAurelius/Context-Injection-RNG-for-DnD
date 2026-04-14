@@ -85,9 +85,3 @@ IV. NARRATIVE STYLE
 - "Use your judgment" applies ONLY to narration and DC selection, never to replacing RNG outcomes.
 
 ```
-
-**How to install**: 
-1. Download the repository (Code -> Download ZIP).
-2. Unzip the folder into: SillyTavern\public\scripts\extensions\third-party\
-3. Reload SillyTavern (F5).
-4. Enable the extension in the Extensions menu.
