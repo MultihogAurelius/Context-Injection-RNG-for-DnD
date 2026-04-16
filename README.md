@@ -10,9 +10,7 @@ This is a system that rolls random numbers and invisibly prepends them to the in
 
 This makes it so that the AI has an "RNG bank" always available that it will use for its rolls, ensuring real randomness. This bank refreshes every input/output.
 
-This is an alternative to using function calls. One advantage it has is seamlessness. You don't need to pay for multiple outputs because it all happens within one output.
-
-One problem that remains is that the AI can still "cheat" by fitting the DCs of skillchecks to the RNG numbers, but I'm not sure how big of a deal it is.
+This is an alternative to using function calls. One advantage it has is seamlessness. You don't need to pay for multiple outputs because it all happens within one output. It's also less "cognitively" taxing to the AI. In my experience this system works with a 100% reliability.
 
 Here is the system prompt I use (that you don't necessarily have to use, of course): 
 ```<role>
